@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace DatingApp.API
 {
@@ -33,9 +34,11 @@ namespace DatingApp.API
     {
       var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
       services.AddDbContext<DataContext>(ctx => ctx.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+      services.AddTransient<Seed>();
       services.AddMvc();
       services.AddCors();
       services.AddScoped<IAuthRepository, AuthRepository>();
+      services.AddScoped<IDatingRepository, DatingRepository>();
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
       {
@@ -50,7 +53,7 @@ namespace DatingApp.API
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
     {
       if (env.IsDevelopment())
       {
@@ -71,7 +74,7 @@ namespace DatingApp.API
           });
         });
       }
-
+      // seeder.SeedUsers();
       app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
       app.UseAuthentication();
 
