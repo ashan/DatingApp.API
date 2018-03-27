@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3"/>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="*"/>
+    <PackageReference Include="CloudinaryDotNet" Version="*"/>
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1"/>
